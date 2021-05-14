@@ -23,7 +23,7 @@ class App extends React.Component {
     }
 
     getData() {
-        axios.get('http://my-json-server.typicode.com/donark87/IS322-Final-Project-React-redux/accounts')
+        axios.get('http://my-json-server.typicode.com/dm262/final/accounts')
             .then(response => {
                 this.props.setAccounts(response.data);
             }).catch(error => {

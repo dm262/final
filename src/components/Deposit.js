@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withdraw } from "../actions";
 import { deposit } from "../actions";
 
-class Balance extends React.Component {
+class Deposit extends React.Component {
 
     state = { name: '', amount: '', typeTransaction: '' }
 
@@ -58,4 +58,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps,{ withdraw, deposit })(Balance);
+export default connect(mapStateToProps,{ withdraw, deposit })(Deposit);

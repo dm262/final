@@ -1,32 +1,46 @@
-export const initialLoad = (accounts) => {
+
+
+
+
+export const setAccounts = accounts => {
+
     return {
-        type: 'INITIAL_LOAD',
-        payload: accounts
-    }
-}
-export const withdraw = (name, amount, id) => {
-    return {
-        type: 'WITHDRAW',
+        type: 'SET_ACCOUNTS',
         payload: {
-            name, amount, id
+            accounts
         }
     }
-}
+};
 
-export const deposit = (name, amount, id) => {
+export const deposit = (_id, amount) => {
     return {
-        type: 'DEPOSIT',
+        type: 'DEPOSIT_MONEY',
         payload: {
-            name, amount, id
+            _id, amount
         }
-    }
-}
-
-export const deleteAccount = (id) => {
+    };
+};
+export const withdraw = (_id, amount) => {
     return {
+        type: 'WITHDRAW_MONEY',
+        payload: {
+            _id, amount
+        }
+    };
+};
+export const newAccount = (name,balance) => {
+    return{
+        type: 'ADD_NEW_ACCOUNT',
+        payload: {
+            name,balance
+        }
+    };
+};
+export const deleteAccount = (_id) => {
+    return{
         type: 'DELETE_ACCOUNT',
         payload: {
-            id,
+            _id
         }
-    }
-}
+    };
+};

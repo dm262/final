@@ -1,35 +1,86 @@
-import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-import { initialLoad } from '../actions';
-import Dashboard from './Dashboard';
-import Transactions from './Transactions';
-import Navigation from './Navigation';
-import Account  from './Account';
-import './styles/index.css';
+import AccountList from "./AccountList";
+import PageTabs from "./PageTab";
+import AddNewAccount from "./AddNewAccount";
+import Deposit from "./Deposit";
+import Withdraw from "./Withdraw";
+import { setAccounts } from "../actions";
 
 
-const App = (props) => {
-    useEffect(() => {
-        axios.get('http://my-json-server.typicode.com/dm262/final')
+class App extends React.Component {
+
+    state = {
+        view: 'page1',
+    };
+
+    componentDidMount() {
+
+        this.getData();
+
+    }
+
+    getData() {
+        axios.get('http://my-json-server.typicode.com/donark87/IS322-Final-Project-React-redux/accounts')
             .then(response => {
-                props.initialLoad(response.data);
+                this.props.setAccounts(response.data);
             }).catch(error => {
-            return error.message;
-        });
-    });
-    return (
-        <div className='topDiv'>
-            <Navigation />
-            <div>
-                <Route path="/" exact component={ Dashboard } />
-                <Route path="/transactions" component={ Transactions } />
-                <Route path="/account/:id" component={ Account } />
-            </div>
-        </div>
-    )
-}
 
-export default connect(null, { initialLoad })(App);
+        });
+    }
+
+    onViewChange(view) {
+        this.setState({ view });
+    }
+
+    wrapPage(jsx) {
+        const { view } = this.state;
+        return (
+            <div className="container">
+                <PageTabs currentView={view}
+                          onViewChange={this.onViewChange.bind(this)}/>
+                {jsx}
+            </div>
+        );
+    }
+
+
+
+    render() {
+        const { view } = this.state;
+
+        switch (view) {
+            case 'page1':
+                return (this.wrapPage(
+                    <AccountList />
+                ));
+            case 'page2':
+                return (this.wrapPage(
+                    <AddNewAccount />
+                ));
+            case 'page3':
+                return (this.wrapPage(
+                    <Deposit />
+                ));
+            case 'page4':
+                return (this.wrapPage(
+                    <Withdraw />
+                ));
+            default:
+                return (this.wrapPage(
+                    <h2>Invalid Tab, choose another</h2>
+                ));
+        }
+
+    }
+
+}
+const mapStateToProps = (state) => {
+    return {
+        errorMessage: state.errors
+    };
+};
+
+export default connect(mapStateToProps, { setAccounts })(App);
